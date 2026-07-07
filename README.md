@@ -1,52 +1,68 @@
-# ✏️ CoDraw — Real-Time Collaborative Whiteboard
+# CoDraw - Real-Time Collaborative Whiteboard
 
-CoDraw is a high-fidelity, responsive, real-time collaborative whiteboard built using HTML5 Canvas, Express, and Socket.IO. It features a premium, clean light-themed UI, real-time sync, cursor tracking, chat, and vector drawing tools.
+CoDraw is a high-fidelity, responsive, real-time collaborative whiteboard built using HTML5 Canvas, Express, and Socket.IO. It features a clean, light-themed UI, real-time sync, cursor tracking, chat, and vector drawing tools.
 
----
-
-## ✨ Features
-
-- 🤝 **Real-Time Collaboration:** Draw simultaneously with teammates instantly.
-- 🎨 **Drawing Canvas:** Smooth freehand drawing with customizable brush thickness (1px to 40px) and a curated color palette plus a native color picker.
-- 🧹 **Precision Eraser:** Destructive transparent pixel erasing using standard canvas composite blending.
-- 📐 **Vector Shapes:** Draw straight lines, rectangles, and circles with real-time bounding box preview overlays before committing.
-- 💬 **Live Group Chat:** Integrated room-specific chat panel with styled chat bubbles and automatic scroll-to-bottom behavior.
-- 👤 **Collaborator Cursors:** Real-time pointer tracking overlay showcasing names and custom colors for active room members (throttled for peak performance).
-- 🔄 **Cooperative Undo & Redo:** Undo/redo actions globally synced across room members, with a local client-side redo backup stack.
-- 📦 **Independent Rooms:** Dynamically join rooms by navigating to custom links (e.g. `/?room=creative-designers`) or enter room IDs via the start screen.
-- 📱 **Mobile Touch & Responsive Design:** Full touch support on mobile, iPad, and tablet devices with display-DPI rendering that keeps drawings sharp on high-definition screens.
-- 💾 **Export Drawing:** Download your complete whiteboard as a solid-white background PNG image.
+This project was built for the HackWeek 2026 competition.
 
 ---
 
-## 🛠️ Tech Stack
+## Overview
+
+Build a real time collaborative whiteboard using Socket.IO with multiple users drawing simultaneously.
+
+---
+
+## Submission Details and Requirements
+
+* **Github Repository:** [https://github.com/Sathvik2954/Co-Draw](https://github.com/Sathvik2954/Co-Draw)
+* **Deployed URL:** [https://co-draw-kyf5.onrender.com/](https://co-draw-kyf5.onrender.com/)
+* **Screen Recording (Collaboration Demonstration):** [Link to Demo Video / Screen Recording] *(Please replace with your recording URL)*
+
+---
+
+## Features
+
+* **Real-Time Collaboration:** Draw simultaneously with teammates instantly.
+* **Drawing Canvas:** Smooth freehand drawing with customizable brush thickness (1px to 40px), a curated color palette, and a custom color picker.
+* **Precision Eraser:** Transparent pixel erasing using destination-out canvas composite operations.
+* **Vector Shapes:** Draw straight lines, rectangles, and circles with dynamic preview overlays before drawing them.
+* **Live Group Chat:** Integrated room-specific chat panel with auto-scrolling messaging and name tags.
+* **Collaborator Cursors:** Real-time pointer tracking overlay showcasing names and colors for active room members (throttled to preserve bandwidth).
+* **Cooperative Undo and Redo:** Undo/redo actions globally synchronized across room members.
+* **Independent Rooms:** Dynamically join rooms by navigating to custom URLs (e.g. `/?room=creative-designers`) or enter room IDs via the start screen.
+* **Mobile Touch and Responsive Design:** Full touch support on mobile and tablet devices with display-DPI rendering that keeps drawings sharp on high-definition screens.
+* **Export Drawing:** Download your whiteboard canvas as a solid-white background PNG image.
+
+---
+
+## Tech Stack
 
 ### Frontend
-- **HTML5 Canvas:** Core drawing rendering.
-- **CSS3 (Vanilla):** Light-theme design system with floating glassmorphism overlays and CSS flex/grid layout.
-- **JavaScript (ES6):** Canvas rendering math, cooperative undo/redo management, event listeners, and Socket.IO-client listeners.
-- **Lucide Icons:** Clean vector icon pack.
+* **HTML5 Canvas:** Core drawing rendering.
+* **CSS3 (Vanilla):** Light-theme design system with floating glassmorphism overlays and flex/grid layout.
+* **JavaScript (ES6):** Drawing logic, cooperative undo/redo management, and Socket.IO-client listeners.
+* **Lucide Icons:** Modern vector icon pack.
 
 ### Backend
-- **Node.js:** Server environment.
-- **Express.js:** Serving static files from the frontend `client/` folder.
-- **Socket.IO:** Handshaking, dynamic room allocations, socket events broadcasting, and state updates.
+* **Node.js:** Server environment.
+* **Express.js:** Serving static files from the frontend folder.
+* **Socket.IO:** Websocket connection handshakes, room allocations, and event broadcasting.
 
 ---
 
-## 🚀 Setup & Local Installation
+## Setup and Local Installation
 
 ### Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) installed (v16.0.0 or higher recommended).
+Make sure you have Node.js installed (v16.0.0 or higher recommended).
 
 ### Steps
 1. **Clone or Download the Repository:**
    ```bash
-   cd WhiteBoard
+   cd Co-Draw
    ```
 
 2. **Install Backend Dependencies:**
-   Navigate into the `server` directory and run npm install:
+   Navigate into the server directory and run:
    ```bash
    cd server
    npm install
@@ -58,23 +74,23 @@ Make sure you have [Node.js](https://nodejs.org/) installed (v16.0.0 or higher r
    npm run dev
    ```
 
-4. **Open in browser:**
-   Open [http://localhost:3000](http://localhost:3000) in your web browser. 
+4. **Open in Browser:**
+   Open http://localhost:3000 in your web browser.
 
 ---
 
-## 💻 Keyboard Shortcuts
-- `P`: Select Pencil Tool
-- `E`: Select Eraser Tool
-- `L`: Select Line Tool
-- `R`: Select Rectangle Tool
-- `C`: Select Circle Tool
-- `Ctrl + Z` / `Cmd + Z`: Undo last action
-- `Ctrl + Y` / `Cmd + Y`: Redo undone action
+## Keyboard Shortcuts
+* `P`: Select Pencil Tool
+* `E`: Select Eraser Tool
+* `L`: Select Line Tool
+* `R`: Select Rectangle Tool
+* `C`: Select Circle Tool
+* `Ctrl + Z` / `Cmd + Z`: Undo last action
+* `Ctrl + Y` / `Cmd + Y`: Redo undone action
 
 ---
 
-## 📄 File Structure
+## File Structure
 ```
 whiteboard/
 ├── client/

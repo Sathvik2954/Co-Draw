@@ -1,0 +1,11 @@
+{
+  "name": "codraw-root",
+  "version": "1.0.0",
+  "description": "Real-time collaborative whiteboard root workspace configuration",
+  "scripts": {
+    "install-server": "npm install --prefix server",
+    "build": "npm run install-server",
+    "start": "node server/server.js",
+    "dev": "npm run dev --prefix server"
+  }
+}

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoDraw — Real-Time Collaborative Whiteboard</title>
+  <!-- SEO & Description -->
+  <meta name="description" content="Collaborate in real-time with CoDraw. A premium, high-performance collaborative whiteboard with chat, shapes, colors, and rooms.">
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Lucide Icons for premium look -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- JOIN ROOM MODAL OVERLAY -->
+  <div id="join-overlay" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="logo-group">
+          <div class="logo-icon">✏️</div>
+          <h2>CoDraw</h2>
+        </div>
+        <p>Real-time collaborative drawing board</p>
+      </div>
+      <form id="join-form" class="modal-body">
+        <div class="form-group">
+          <label for="username-input">Your Name</label>
+          <input type="text" id="username-input" placeholder="e.g. Sarah" required autocomplete="off" maxlength="15">
+        </div>
+        <div class="form-group">
+          <label for="room-input">Room ID</label>
+          <div class="room-input-group">
+            <input type="text" id="room-input" placeholder="e.g. room-123" required autocomplete="off" pattern="^[a-zA-Z0-9-_]+$" title="Only alphanumeric characters, dashes, and underscores allowed.">
+            <button type="button" id="random-room-btn" title="Generate Random Room">
+              <i data-lucide="shuffle"></i>
+            </button>
+          </div>
+        </div>
+        <button type="submit" id="join-submit-btn" class="btn-primary">
+          <span>Join Board</span>
+          <i data-lucide="arrow-right"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MAIN APP CONTAINER -->
+  <div id="app-container" class="app-container hidden">
+    
+    <!-- FLOATING TOP TOOLBAR -->
+    <header class="top-toolbar">
+      <!-- Logo & Room Info -->
+      <div class="toolbar-section left-section">
+        <div class="brand">
+          <span class="brand-logo">✏️</span>
+          <span class="brand-name">CoDraw</span>
+        </div>
+        <div class="divider"></div>
+        <div class="room-badge" id="room-badge-container">
+          <span class="room-label">Room:</span>
+          <span id="room-display-id" class="room-id">...</span>
+          <button id="copy-room-link-btn" class="icon-btn-small" title="Copy Invite Link">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Drawing Tools Selection -->
+      <div class="toolbar-section middle-section">
+        <div class="tool-group" role="radiogroup" aria-label="Drawing Tools">
+          <button id="tool-pencil" class="tool-btn active" title="Pencil (P)" aria-checked="true">
+            <i data-lucide="pencil"></i>
+          </button>
+          <button id="tool-eraser" class="tool-btn" title="Eraser (E)" aria-checked="false">
+            <i data-lucide="eraser"></i>
+          </button>
+          <div class="divider"></div>
+          <button id="tool-line" class="tool-btn" title="Line (L)" aria-checked="false">
+            <i data-lucide="minus"></i>
+          </button>
+          <button id="tool-rectangle" class="tool-btn" title="Rectangle (R)" aria-checked="false">
+            <i data-lucide="square"></i>
+          </button>
+          <button id="tool-circle" class="tool-btn" title="Circle (C)" aria-checked="false">
+            <i data-lucide="circle"></i>
+          </button>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Color Swatches & Picker -->
+        <div class="color-section">
+          <div class="color-palette">
+            <button class="color-swatch active" style="background-color: #0f172a;" data-color="#0f172a" title="Slate"></button>
+            <button class="color-swatch" style="background-color: #3b82f6;" data-color="#3b82f6" title="Blue"></button>
+            <button class="color-swatch" style="background-color: #10b981;" data-color="#10b981" title="Green"></button>
+            <button class="color-swatch" style="background-color: #ef4444;" data-color="#ef4444" title="Red"></button>
+            <button class="color-swatch" style="background-color: #f59e0b;" data-color="#f59e0b" title="Yellow"></button>
+          </div>
+          <div class="color-picker-wrapper">
+            <input type="color" id="custom-color-picker" value="#0f172a" title="Custom Color">
+            <label for="custom-color-picker" class="color-picker-label">
+              <i data-lucide="palette"></i>
+            </label>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Brush Size Control -->
+        <div class="brush-size-control">
+          <button id="brush-size-indicator-btn" class="brush-indicator-btn" title="Brush Size">
+            <div id="brush-dot" style="width: 6px; height: 6px;"></div>
+            <span id="brush-size-text">6px</span>
+          </button>
+          <div class="brush-slider-dropdown hidden" id="brush-slider-dropdown">
+            <div class="slider-header">
+              <span>Size: <strong id="slider-val-label">6px</strong></span>
+            </div>
+            <input type="range" id="brush-size-slider" min="1" max="40" value="6">
+            <div class="slider-preview-box">
+              <div id="slider-preview-dot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Operations (Undo/Redo, Clear, Save, Sidebar Toggle) -->
+      <div class="toolbar-section right-section">
+        <button id="btn-undo" class="action-btn" title="Undo (Ctrl+Z)">
+          <i data-lucide="undo-2"></i>
+        </button>
+        <button id="btn-redo" class="action-btn" title="Redo (Ctrl+Y)">
+          <i data-lucide="redo-2"></i>
+        </button>
+        <button id="btn-clear" class="action-btn-danger" title="Clear Board">
+          <i data-lucide="trash-2"></i>
+        </button>
+        <div class="divider"></div>
+        <button id="btn-download" class="btn-secondary" title="Save as PNG">
+          <i data-lucide="download"></i>
+          <span>Export</span>
+        </button>
+        <button id="btn-toggle-sidebar" class="sidebar-toggle-btn active" title="Toggle Sidebar">
+          <i data-lucide="sidebar"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- CANVAS & COLLABORATOR CURSORS CONTAINER -->
+    <main class="canvas-viewport" id="canvas-viewport">
+      <canvas id="whiteboard-canvas"></canvas>
+      
+      <!-- Cursors container overlay -->
+      <div id="cursors-overlay" class="cursors-overlay"></div>
+    </main>
+
+    <!-- RIGHT SIDEBAR (COLLAPSIBLE) -->
+    <aside class="sidebar" id="sidebar">
+      
+      <!-- Collaborators Panel -->
+      <div class="sidebar-panel collaborators-panel">
+        <div class="panel-header">
+          <h3>Collaborators</h3>
+          <span id="user-count-badge" class="count-badge">1</span>
+        </div>
+        <div class="users-list" id="users-list">
+          <!-- Active users appended here -->
+        </div>
+      </div>
+
+      <!-- Chat Panel -->
+      <div class="sidebar-panel chat-panel">
+        <div class="panel-header">
+          <h3>Room Chat</h3>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+          <div class="system-message">Welcome to the board! Invite others using the link above.</div>
+        </div>
+        <form id="chat-input-form" class="chat-form">
+          <input type="text" id="chat-input" placeholder="Type a message..." required autocomplete="off" maxlength="150">
+          <button type="submit" id="chat-send-btn" class="chat-send-btn" title="Send Message">
+            <i data-lucide="send"></i>
+          </button>
+        </form>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Toast notification system -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Socket.IO library (provided automatically by the Socket.IO server at /socket.io/socket.io.js) -->
+  <script src="/socket.io/socket.io.js"></script>
+  
+  <!-- Core Whiteboard Logic Script -->
+  <script src="script.js"></script>
+</body>
+</html>

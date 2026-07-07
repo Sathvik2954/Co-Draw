@@ -4,19 +4,13 @@ CoDraw is a high-fidelity, responsive, real-time collaborative whiteboard built 
 
 This project was built for the HackWeek 2026 competition.
 
+Deployed Link: [https://co-draw-kyf5.onrender.com/](https://co-draw-kyf5.onrender.com/)
+
 ---
 
 ## Overview
 
 Build a real time collaborative whiteboard using Socket.IO with multiple users drawing simultaneously.
-
----
-
-## Submission Details and Requirements
-
-* **Github Repository:** [https://github.com/Sathvik2954/Co-Draw](https://github.com/Sathvik2954/Co-Draw)
-* **Deployed URL:** [https://co-draw-kyf5.onrender.com/](https://co-draw-kyf5.onrender.com/)
-* **Screen Recording (Collaboration Demonstration):** [Link to Demo Video / Screen Recording] *(Please replace with your recording URL)*
 
 ---
 
